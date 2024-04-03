@@ -27,5 +27,6 @@ export const logout = () => {
 }
 
 export const isStandaloneRoute = (pathname: string) => {
+  pathname = `/${pathname}/`.replaceAll('//', '/');
   return standaloneRoutes.includes(pathname);
 }
