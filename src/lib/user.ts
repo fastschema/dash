@@ -1,4 +1,4 @@
-import Cookies from '../../node_modules/@types/js-cookie';
+import Cookies from 'js-cookie';
 import { Get, Post } from './request';
 import { COOKIE_NAME, LoginData, LoginResponse, SetupData, User, standaloneRoutes } from './types';
 

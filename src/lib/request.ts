@@ -1,4 +1,4 @@
-import Cookies from '../../node_modules/@types/js-cookie';
+import Cookies from 'js-cookie';
 import { API_BASE_URI, COOKIE_NAME } from './types';
 import { setNetworkError } from './event-bus';
 import { notify } from './notify';
