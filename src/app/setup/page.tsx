@@ -50,7 +50,6 @@ export default function SetupPage() {
 
   const onSubmit = async (values: z.infer<typeof setupFormSchema>) => {
     setLoading(true);
-    console.log(values);
     try {
       const status = await setup(values);
       if (status) {
