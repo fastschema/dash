@@ -9,6 +9,7 @@ const nextConfig = {
   basePath: '/dash',
   trailingSlash: true,
   skipTrailingSlashRedirect: false,
+  distDir: process.env.DIST_DIR ?? 'out',
 }
 
 module.exports = withBundleAnalyzer(nextConfig);
