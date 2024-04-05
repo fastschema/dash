@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "rimraf ./.next && rimraf ./out && next dev -p 3001",
+    "dev": "rimraf ./.next && rimraf ./out && next dev",
     "build": "rimraf ./.next && rimraf ./out && next build",
     "start": "next start",
     "lint": "next lint"
