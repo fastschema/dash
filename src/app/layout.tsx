@@ -1,7 +1,7 @@
 'use client';
 import '@/assets/globals.css';
 import '@/assets/style.scss';
-// import '@/components/common/wysiwyg/editor.scss';
+import '@/components/common/editor/editor.scss';
 import 'tippy.js/dist/tippy.css';
 import 'tippy.js/themes/light.css';
 import 'tippy.js/themes/light-border.css';

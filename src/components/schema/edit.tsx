@@ -1,3 +1,5 @@
+'use client';
+
 import pluralize from 'pluralize';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useFieldArray, useForm } from 'react-hook-form';
@@ -41,10 +43,8 @@ export const EditSchemaForm = (props: Readonly<EditSchemaFormProps>) => {
   });
 
   useEffect(() => {
-    if (editingSchema) {
-      form.reset(editingSchema);
-    }
-  }, [editingSchema]);
+    form.reset(editingSchema ?? defaultSchemaFormValues);
+  }, [editingSchema?.name]);
 
   useEffect(() => {
     !editingSchema?.name && watchSchemaName && form.setValue('namespace', pluralize(watchSchemaName));
@@ -95,7 +95,7 @@ export const EditSchemaForm = (props: Readonly<EditSchemaFormProps>) => {
       notify.success(`Schema ${savedSchema.name} saved successfully.`);
       router.push(`/schemas/edit?schema=${savedSchema.name}`);
       form.reset(savedSchema);
-      !editingSchema?.name && reloadAppConfig();
+      reloadAppConfig();
     } catch (e: any) { }
   }
 
