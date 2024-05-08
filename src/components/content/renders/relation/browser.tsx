@@ -7,7 +7,7 @@ import {
 import { ReactNode, useEffect, useState } from 'react';
 import { SearchOptions } from './search';
 import { isMultiple, searchSchemaContents } from './utils';
-import { Content, Field, Pagination, Schema } from '@/lib/types';
+import { Content, Field, PaginationResponse, Schema } from '@/lib/types';
 import { SelectPagination } from './pagination';
 import { CheckIcon } from 'lucide-react';
 import { useAppSchema } from '@/lib/context';
@@ -34,7 +34,7 @@ export const RelationContentsBrowser = (props: RelationContentsBrowserProps) => 
   } = props;
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [result, setResult] = useState<Pagination<Content>>();
+  const [result, setResult] = useState<PaginationResponse<Content>>();
   const relationSchema = useAppSchema(field.relation?.schema ?? null);
   const multiple = isMultiple(field.relation);
 
@@ -68,7 +68,7 @@ export const RelationContentsBrowser = (props: RelationContentsBrowserProps) => 
             })}
             <CommandSeparator className='my-2' />
           </>}
-          {result?.data?.map(item => {
+          {result?.items?.map(item => {
             if (includedIds.includes(item.id) || excludedIds.includes(item.id)) return null;
             if (content && !multiple && includes?.length) {
               return null;
@@ -85,7 +85,7 @@ export const RelationContentsBrowser = (props: RelationContentsBrowserProps) => 
       </CommandList>
     </Command>
     <SelectPagination
-      totalPages={result?.pagination?.last_page ?? 1}
+      totalPages={result?.last_page ?? 1}
       currentPage={page}
       setPage={setPage}
     />

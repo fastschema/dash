@@ -16,10 +16,10 @@ import {
 } from '@tanstack/react-table';
 import { useEffect, useRef, useState } from 'react';
 import { TableToolbar } from './toolbar';
-import { Pagination } from './pagination';
+import { TablePagination } from './pagination';
 import { TableColumn } from './column';
 import { getTableOptions, sendRequestFn, usePagination } from './utils';
-import { PaginationData } from '@/lib/types';
+import { Pagination } from '@/lib/types';
 import { RequestFn } from './types';
 import { Loading } from '../loading';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,7 @@ import { cn } from '@/lib/utils';
 export interface TableProps<T> {
   className?: string;
   data?: T[];
-  pagination?: PaginationData;
+  pagination?: Pagination;
   sort?: string | null;
   columns: TableColumn<T>[];
   filterTitle?: string;
@@ -70,7 +70,7 @@ export const Table = <T,>(props: TableProps<T>) => {
       })
   );
 
-  const [paginationData, setPaginationData] = useState<PaginationData | undefined>(props.pagination);
+  const [paginationData, setPaginationData] = useState<Pagination | undefined>(props.pagination);
   const { pagination, setPagination } = usePagination(props.pagination);
   const initialized = useRef(false);
   const table = useReactTable({
@@ -164,6 +164,6 @@ export const Table = <T,>(props: TableProps<T>) => {
         </TableBody>
       </TableBase>
     </div>
-    {(props?.pagination?.last_page ?? 1) > 1 && <Pagination table={table} />}
+    {(props?.pagination?.last_page ?? 1) > 1 && <TablePagination table={table} />}
   </div>;
 }

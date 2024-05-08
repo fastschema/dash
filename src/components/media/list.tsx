@@ -120,7 +120,7 @@ export const MediaList = (props: MediaListProps) => {
           onClick={setSelectMedia}
         />;
       })}
-      {(data?.data ?? []).map(media => {
+      {(data?.items ?? []).map(media => {
         return <MediaItem
           key={media.id}
           media={media}

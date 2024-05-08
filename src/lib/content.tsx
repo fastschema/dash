@@ -1,6 +1,6 @@
 import { isMultiple } from '@/components/content/renders/relation/utils';
 import { Delete, Get, Post, Put } from './request';
-import { Content, FilterParams, Pagination, Schema } from './types';
+import { Content, FilterParams, PaginationResponse, Schema } from './types';
 
 export const saveContent = async (schema: Schema, content: Content, id?: number) => {
   const saveData: Content = {
@@ -97,7 +97,7 @@ export const getContentFilterQuery = (params?: FilterParams) => {
 export const getContentList = async <T extends Content = Content>(
   schemaName?: string | null,
   params?: FilterParams,
-): Promise<Pagination<T>> => {
+): Promise<PaginationResponse<T>> => {
   if (!schemaName) {
     throw new Error('Schema name is required');
   }
@@ -113,7 +113,7 @@ export const getContentList = async <T extends Content = Content>(
     ? '?' + getContentFilterQuery(params)
     : '';
 
-  return Get<Pagination<T>>(`/content/${schemaName}${queryString}`);
+  return Get<PaginationResponse<T>>(`/content/${schemaName}${queryString}`);
 };
 
 export const getContentDetail = async (

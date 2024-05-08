@@ -93,16 +93,15 @@ export type RelationContentArrayCreate = Array<{ id: number }>;
 
 export type RelationContentUpdate = RelationContentArrayUpdate | RelationContentArrayCreate | Content | null;
 
-export interface PaginationData {
+export interface Pagination {
   total: number;
   per_page: number;
   current_page: number;
   last_page: number;
 }
 
-export interface Pagination<T> {
-  data: T[];
-  pagination: PaginationData;
+export interface PaginationResponse<T> extends Pagination{
+  items: T[];
 }
 
 export type FilterOperator = '$eq' | '$neq' | '$gt' | '$gte' | '$lt' | '$lte' | '$like' | '$in' | '$nin' | '$null';

@@ -64,8 +64,13 @@ export default function ContentList() {
 
   return <Table<Content>
     ssr={true}
-    data={data?.data ?? []}
-    pagination={data?.pagination}
+    data={data?.items ?? []}
+    pagination={{
+      current_page: data?.current_page ?? 1,
+      last_page: data?.last_page ?? 1,
+      per_page: data?.per_page ?? 10,
+      total: data?.total ?? 0,
+    }}
     sort={sort}
     columns={createContentColumns(schema, () => { refetch() })}
     enableRowSelection={true}

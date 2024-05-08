@@ -19,7 +19,7 @@ export interface TablePaginationProps<TData> {
   table: Table<TData>;
 }
 
-export function Pagination<TData>({ table }: Readonly<TablePaginationProps<TData>>) {
+export function TablePagination<TData>({ table }: Readonly<TablePaginationProps<TData>>) {
   return (
     <div className='flex items-center justify-between px-2'>
       <div className='flex-1 text-sm text-muted-foreground'>

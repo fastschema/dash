@@ -11,7 +11,7 @@ import {
   getSortedRowModel
 } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
-import { PaginationData } from '@/lib/types/content';
+import { Pagination } from '@/lib/types/content';
 import { GetTableOptionsProps, SendRequestProps } from './types';
 import { notify } from '@/lib/notify';
 
@@ -115,13 +115,18 @@ export const sendRequestFn = <T,>({
         sorting,
         columnFilters,
       });
-  
+
       if (!result) {
         return;
       }
-  
-      setData?.(result?.data ?? []);
-      setPaginationData(result?.pagination);
+
+      setData?.(result?.items ?? []);
+      setPaginationData({
+        current_page: result?.current_page ?? 1,
+        last_page: result?.last_page ?? 1,
+        per_page: result?.per_page ?? 10,
+        total: result?.total ?? 0,
+      });
       if (resetPage) {
         setPagination({ pageIndex: 0, pageSize: pagination.pageSize });
       }
@@ -134,7 +139,7 @@ export const sendRequestFn = <T,>({
   })();
 };
 
-export const usePagination = (paginationData?: PaginationData) => {
+export const usePagination = (paginationData?: Pagination) => {
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: (paginationData?.current_page ?? 1) - 1,
     pageSize: paginationData?.per_page ?? 10,
