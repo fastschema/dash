@@ -7,7 +7,7 @@ export const uploadFiles = async (files: File[]): Promise<Media[]> => {
     formData.append('file', file);
   }
 
-  return await Post<Media[]>('/media/upload', formData, {
+  return await Post<Media[]>('/file/upload', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -22,7 +22,7 @@ export const uploadFile = async (file: File) => {
   return await Post<{
     success: Media[],
     error: Media[],
-  }>('/media/upload', formData, {
+  }>('/file/upload', formData, {
     headers: {
       'Content-Type': 'multipart/form-data',
     },
@@ -30,5 +30,5 @@ export const uploadFile = async (file: File) => {
 }
 
 export const deleteFiles = async (ids: number[]) => {
-  return await Delete('/media', ids);
+  return await Delete('/file', ids);
 }

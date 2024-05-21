@@ -27,7 +27,7 @@ export const MediaList = (props: MediaListProps) => {
 
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ['media', page],
-    queryFn: () => getContentList<Media>('media', {
+    queryFn: () => getContentList<Media>('file', {
       limit: 20,
       page: page ?? undefined,
     }),
@@ -100,14 +100,14 @@ export const MediaList = (props: MediaListProps) => {
           <ChevronLeft className='mr-2 h-4 w-4' />
           Previous
         </Button>
-        <Button variant='outline' size='sm' disabled={page === data?.pagination?.last_page} onClick={() => {
-          page < (data?.pagination?.last_page ?? 1) && setPage(page + 1);
+        <Button variant='outline' size='sm' disabled={page === data?.last_page} onClick={() => {
+          page < (data?.last_page ?? 1) && setPage(page + 1);
         }}>
           Next
           <ChevronRight className='ml-2 h-4 w-4' />
         </Button>
         <div>
-          <span className='text-sm text-muted-foreground'>{page} of {data?.pagination?.last_page}</span>
+          <span className='text-sm text-muted-foreground'>{page} of {data?.last_page}</span>
         </div>
       </div>
     </div>
