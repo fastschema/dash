@@ -14,7 +14,7 @@ export const saveContent = async (schema: Schema, content: Content, id?: number)
       continue;
     }
 
-    if (field.type === 'relation' || field.type === 'media') {
+    if (field.type === 'relation' || field.type === 'file') {
       // Updating content relation
       if (id) {
         // Clearing all content from relation

@@ -96,20 +96,22 @@ export const useSchemaTableColumns = (): TableColumn<Schema>[] => {
           <Link className='cursor-pointer hover:underline' href={`/schemas/edit?schema=${schema.name}`}>
             Edit
           </Link>
-          <Separator orientation='vertical' />
-          <button className='cursor-pointer hover:underline text-red-800' onClick={async () => {
-            if (confirm(`Are you sure you want to delete this schema: ${schema.name}?`)) {
-              try {
-                await deleteSchema(schema.name);
-                notify.success(`Schema ${schema.name} deleted`);
-                reloadAppConfig();
-              } catch (e: any) {
-                notify.error(e.message);
+          {!schema.is_system_schema && <>
+            <Separator orientation='vertical' />
+            <button className='cursor-pointer hover:underline text-red-800' onClick={async () => {
+              if (confirm(`Are you sure you want to delete this schema: ${schema.name}?`)) {
+                try {
+                  await deleteSchema(schema.name);
+                  notify.success(`Schema ${schema.name} deleted`);
+                  reloadAppConfig();
+                } catch (e: any) {
+                  notify.error(e.message);
+                }
               }
-            }
-          }}>
-            Delete
-          </button>
+            }}>
+              Delete
+            </button>
+          </>}
         </div>;
       },
     },

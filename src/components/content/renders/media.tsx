@@ -18,13 +18,13 @@ export interface MediaFieldSingleProps {
 }
 export type MediaFieldProps = MediaFieldMultipleProps | MediaFieldSingleProps;
 
-export class FieldRendererMedia extends BaseFieldRenderer {
-  class = 'media';
+export class FieldRendererFile extends BaseFieldRenderer {
+  class = 'file';
   settings: Field[] = [
     {
       type: 'enum',
       name: 'type',
-      label: 'Media Type',
+      label: 'File Type',
       enums: [
         { value: 'all', label: 'All file types' },
         { value: 'image', label: 'Image' },

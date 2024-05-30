@@ -60,7 +60,7 @@ export const useRelationFields = (schema?: Schema, allSchemas: Schema[] = []): s
 
   const relationFields = schema.fields
     .filter(field => {
-      return (field.type === 'relation' && field.relation) || field.type === 'media';
+      return (field.type === 'relation' && field.relation) || field.type === 'file';
     })
     .map(field => {
       if (!field.relation) {
@@ -72,7 +72,7 @@ export const useRelationFields = (schema?: Schema, allSchemas: Schema[] = []): s
       // So we don't need to load them here.
       // We only need to load the single value relation fields and media fields.
       // It's required to set the relation value to the form field.
-      if (isMultiple(field.relation) && field.type !== 'media') {
+      if (isMultiple(field.relation) && field.type !== 'file') {
         return null;
       }
 
@@ -83,7 +83,7 @@ export const useRelationFields = (schema?: Schema, allSchemas: Schema[] = []): s
       }
 
       const columns = [`${field.name}.id`, `${field.name}.${targetSchema.label_field}`];
-      (field.type === 'media') && columns.push(`${field.name}.path`, `${field.name}.type`);
+      (field.type === 'file') && columns.push(`${field.name}.path`, `${field.name}.type`, `${field.name}.disk`);
 
       return columns.join(',');
     }).filter(Boolean) as string[];

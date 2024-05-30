@@ -7,7 +7,7 @@ export const fieldSchema = z.object({
   // .refine((value) => /^[a-zA-Z0-9]+[-'s]?[a-zA-Z0-9 ]+$/.test(value), 'Name should contain only alphabets'),
   server_name: z.string().optional(),
   label: z.string().min(1, { message: 'Field label is required' }),
-  type: z.enum(['bool', 'time', 'json', 'uuid', 'bytes', 'enum', 'string', 'text', 'int', 'int8', 'int16', 'int32', 'int64', 'uint', 'uint8', 'uint16', 'uint32', 'uint64', 'float32', 'float64', 'relation', 'media']),
+  type: z.enum(['bool', 'time', 'json', 'uuid', 'bytes', 'enum', 'string', 'text', 'int', 'int8', 'int16', 'int32', 'int64', 'uint', 'uint8', 'uint16', 'uint32', 'uint64', 'float32', 'float64', 'relation', 'file']),
   multiple: z.boolean().optional(),
   size: z.coerce.number().optional(),
   unique: z.boolean().optional(),

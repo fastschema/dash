@@ -74,7 +74,7 @@ export const FormFieldCommon = (props: FormFieldCommonProps) => {
                   <SelectItem value='bool'>Boolean</SelectItem>
                   <SelectItem value='int64'>Int</SelectItem>
                   <SelectItem value='float64'>Float</SelectItem>
-                  <SelectItem value='media'>Media</SelectItem>
+                  <SelectItem value='file'>Media</SelectItem>
                   <SelectItem value='relation'>Relation</SelectItem>
                 </SelectGroup>
                 <SelectSeparator />
@@ -135,7 +135,7 @@ export const FormFieldCommon = (props: FormFieldCommonProps) => {
       )}
     />
 
-    {fieldType === 'media' && <FormField
+    {fieldType === 'file' && <FormField
       control={form.control}
       name='multiple'
       render={({ field }) => (

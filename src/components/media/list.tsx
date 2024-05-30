@@ -26,7 +26,7 @@ export const MediaList = (props: MediaListProps) => {
   const [uploadedMedias, setUploadedMedias] = useState<Media[]>([]);
 
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ['media', page],
+    queryKey: ['file', page],
     queryFn: () => getContentList<Media>('file', {
       limit: 20,
       page: page ?? undefined,
@@ -55,7 +55,7 @@ export const MediaList = (props: MediaListProps) => {
           await deleteFiles(selectedMedias.map(m => m.id));
           await refetch();
           setSelectedMedias([]);
-          notify.success('Medias deleted successfully');
+          notify.success('Files deleted successfully');
         } catch (e: any) { }
       }
     })();

@@ -48,7 +48,7 @@ const fieldTypesToZodTypes: {
   'float32': (field: Field, content?: Content) => new FloatField(field, content),
   'float64': (field: Field, content?: Content) => new FloatField(field, content),
   'relation': (field: Field, content?: Content) => new RelationField(field, content),
-  'media': (field: Field, content?: Content) => new RelationField(field, content),
+  'file': (field: Field, content?: Content) => new RelationField(field, content),
 };
 
 export const useContentForm = (schema: Schema, content?: Content) => {

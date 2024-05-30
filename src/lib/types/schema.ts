@@ -27,7 +27,7 @@ export interface FieldRenderer {
   settings?: Record<string, any>;
 }
 
-export type FieldType = 'bool' | 'time' | 'json' | 'uuid' | 'bytes' | 'enum' | 'string' | 'text' | 'int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64' | 'float32' | 'float64' | 'relation' | 'media';
+export type FieldType = 'bool' | 'time' | 'json' | 'uuid' | 'bytes' | 'enum' | 'string' | 'text' | 'int' | 'int8' | 'int16' | 'int32' | 'int64' | 'uint' | 'uint8' | 'uint16' | 'uint32' | 'uint64' | 'float32' | 'float64' | 'relation' | 'file';
 
 export interface Field {
   type: FieldType;

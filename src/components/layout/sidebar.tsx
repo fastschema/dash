@@ -28,13 +28,15 @@ export interface SidebarProps {
   sheet?: boolean;
 }
 
+const excludeSchemasFromMenu = ['user', 'role', 'permission', 'file'];
+
 export const Sidebar = (props: SidebarProps) => {
   const { appConfig } = useContext(AppContext);
   const { logo, sheet } = props;
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const iconClassName = !sheet ? 'h-4 w-4' : 'h-5 w-5';
-  const schemas = appConfig.schemas.filter(schema => !schema.is_system_schema);
+  const schemas = appConfig.schemas.filter(schema => !excludeSchemasFromMenu.includes(schema.name));
   const navClassName = !sheet
     ? 'grid items-start px-2 text-sm font-medium lg:px-4'
     : 'grid gap-2 text-lg font-medium';

@@ -10,7 +10,7 @@ import { FieldRendererEnum } from './enum';
 import { BaseFieldRenderer } from './base';
 import { FieldRendererRelation } from './relation';
 import { FieldRendererEditor } from './editor';
-import { FieldRendererMedia } from './media';
+import { FieldRendererFile } from './media';
 
 export const getFieldRenderer = (fieldType: FieldType, field: Field, content?: Content): BaseFieldRenderer => {
   if (window === undefined) {
@@ -71,7 +71,7 @@ export const getDefaultFieldRenders = (): FieldRenderersByTypes => {
     float32: [FieldRendererNumber],
     float64: [FieldRendererNumber],
     relation: [FieldRendererRelation],
-    media: [FieldRendererMedia],
+    file: [FieldRendererFile],
   };
 
   return renders;
