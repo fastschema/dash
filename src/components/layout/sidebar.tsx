@@ -19,7 +19,7 @@ import { ReactNode, useContext } from 'react';
 import { UserMenu } from './user';
 import { AppContext } from '@/lib/context';
 import { slugToTitle } from '@/lib/helper';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { ReadonlyURLSearchParams, usePathname, useSearchParams } from 'next/navigation';
 import { SidebarMenu, SidebarMenuItemProps } from './menu';
 import { Tooltip } from '@/components/common/tooltip';
 
@@ -54,34 +54,16 @@ export const Sidebar = (props: SidebarProps) => {
       extra: <Badge className='flex items-center justify-center w-5 h-5 rounded-full px-2'>
         {schemas.length}
       </Badge>,
-      items: [
-        {
-          href: '/content/?schema=user',
-          label: 'All Users',
-          icon: <Users className='w4 h-4' />,
+      items: schemas.map(schema => {
+        return {
+          href: `/content/?schema=${schema.name}`,
+          label: slugToTitle(schema.name),
+          icon: <LibraryBig className='w4 h-4' />,
           checkActiveFn: () => {
-            return pathname === '/content' && searchParams.get('schema') === 'user';
+            return pathname === `/content` && searchParams.get('schema') === schema.name;
           },
-        },
-        {
-          href: '/content/edit?schema=user',
-          label: 'New User',
-          icon: <UserRoundPlus className='w4 h-4' />,
-          checkActiveFn: () => {
-            return pathname === '/content/edit' && searchParams.get('schema') === 'user';
-          }
-        },
-        ...schemas.map(schema => {
-          return {
-            href: `/content/?schema=${schema.name}`,
-            label: slugToTitle(schema.name),
-            icon: <LibraryBig className='w4 h-4' />,
-            checkActiveFn: () => {
-              return pathname === `/content` && searchParams.get('schema') === schema.name;
-            },
-          }
-        }),
-      ],
+        }
+      }),
     },
     {
       href: '/schemas',
@@ -121,7 +103,28 @@ export const Sidebar = (props: SidebarProps) => {
       href: '/settings',
       icon: <Settings className={iconClassName} />,
       label: 'Settings',
+      checkActiveFn: (href: string, pathName?: string, searchParams?: ReadonlyURLSearchParams): boolean => {
+        const isUserPage = (pathName ?? '/').startsWith('/content/') &&
+          searchParams?.get('schema') === 'user';
+        return isUserPage || (pathname ?? '/').split('?')[0] === href;
+      },
       items: [
+        {
+          href: '/content/?schema=user',
+          label: 'Users',
+          icon: <Users className={iconClassName} />,
+          checkActiveFn: () => {
+            return pathname === '/content' && searchParams.get('schema') === 'user';
+          },
+        },
+        {
+          href: '/content/edit?schema=user',
+          label: 'New User',
+          icon: <UserRoundPlus className={iconClassName} />,
+          checkActiveFn: () => {
+            return pathname === '/content/edit' && searchParams.get('schema') === 'user';
+          }
+        },
         {
           href: '/settings/roles',
           icon: <ShieldCheck className={iconClassName} />,
@@ -141,7 +144,7 @@ export const Sidebar = (props: SidebarProps) => {
         <span>Fastschema</span>
       </Link>}
 
-      <SidebarMenu items={sidebarMenus} pathname={pathname} />
+      <SidebarMenu items={sidebarMenus} pathname={pathname} searchParams={searchParams} />
     </nav>
     <nav className='mt-auto mb-3 flex flex-row items-center px-6 lg:px-7 gap-3'>
       <div className='flex-1'>

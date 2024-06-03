@@ -24,6 +24,10 @@ export class BaseField implements FieldInstance {
     return !!this.field.is_system_field;
   }
 
+  isLocked() {
+    return !!this.field.is_locked;
+  }
+
   zod(): z.ZodTypeAny {
     this.extend();
 

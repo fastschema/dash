@@ -34,6 +34,7 @@ export interface Field {
   name: string;
   multiple?: boolean;
   is_system_field?: boolean;
+  is_locked?: boolean;
   server_name?: string;
   label: string;
   renderer?: FieldRenderer;

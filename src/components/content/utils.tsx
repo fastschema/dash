@@ -93,12 +93,9 @@ export const createFieldsInstances = <T extends FieldValues = FieldValues>(
   const defaultValues: FieldValues = {};
 
   for (const field of fields) {
-    // if (field.is_system_field) continue;
-    if (['id', 'created_at', 'updated_at', 'deleted_at'].includes(field.name)) continue;
-
     const createFieldInstanceFn = fieldTypesToZodTypes[field.type] ?? fieldTypesToZodTypes['string'];
     const fieldInstance = createFieldInstanceFn(field, content);
-    if (schemaName !== 'user' && fieldInstance.isSystemField()) continue;
+    if (fieldInstance.isLocked()) continue;
     const zodField = fieldInstance.zod();
     defaultValues[field.name] = content?.[field.name] ?? fieldInstance.default();
     zodObjectMap[field.name] = zodField;

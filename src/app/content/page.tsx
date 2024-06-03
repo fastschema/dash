@@ -34,7 +34,7 @@ export default function ContentList() {
       actions: [
         <Link key='create' href={'/content/edit?schema=' + schemaName}>
           <Button size='sm' icon={<PlusCircle className='mr-2 h-4 w-4' />}>
-            New record
+            New {schemaName}
           </Button>
         </Link>
       ],

@@ -6,11 +6,13 @@ import {
 } from '@/components/ui/accordion';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
+import { ReadonlyURLSearchParams } from 'next/navigation';
 import { ReactNode } from 'react';
 
 export interface SidebarMenuProps {
   items: SidebarMenuItemProps[];
   pathname: string;
+  searchParams: ReadonlyURLSearchParams;
   className?: string;
 }
 
@@ -18,7 +20,8 @@ export interface SidebarMenuItemProps {
   label: ReactNode;
   href: string;
   pathname?: string;
-  checkActiveFn?: (pathname?: string) => boolean | undefined;
+  searchParams?: ReadonlyURLSearchParams;
+  checkActiveFn?: (href: string, pathname?: string, searchParams?: ReadonlyURLSearchParams) => boolean | undefined;
   sheet?: boolean;
   icon?: ReactNode;
   extra?: ReactNode;
@@ -26,34 +29,44 @@ export interface SidebarMenuItemProps {
 }
 
 export const SidebarMenu = (props: SidebarMenuProps) => {
-  const { items, pathname, className } = props;
+  const { items, pathname, searchParams, className } = props;
 
   // Create default value array so that the accordion can be opened when the child is active.
   // For example, if the pathName is /schemas/edit/item
   // Then the default value should be ['/schemas', '/schemas/edit', '/schemas/edit/item']
-  const defaultValue: string[] = [];
+  const defaultOpenItems: string[] = [];
   const pathParts = pathname.split('/').filter(Boolean);
   let path = '';
   pathParts.forEach(part => {
     path += '/' + part;
-    defaultValue.push(path);
+    defaultOpenItems.push(path);
+  });
+
+  items.forEach(item => {
+    const isActive = item.checkActiveFn
+      ? item.checkActiveFn(item.href, pathname, searchParams)
+      : (pathname ?? '/').split('?')[0] === item.href;
+
+    if (isActive && !defaultOpenItems.includes(item.href)) {
+      defaultOpenItems.push(item.href);
+    }
   });
 
   return <Accordion
     type='multiple'
     className={cn('w-full', className)}
-    defaultValue={defaultValue}
+    defaultValue={defaultOpenItems}
   >
     {items.map((item, i) => {
-      return <SidebarMenuItem key={item.href + i} {...item} pathname={pathname} />;
+      return <SidebarMenuItem key={item.href + i} {...item} pathname={pathname} searchParams={searchParams} />;
     })}
   </Accordion>
 }
 
 export const SidebarMenuItem = (props: SidebarMenuItemProps) => {
-  const { label, href, pathname, checkActiveFn, sheet, icon, extra, items } = props;
+  const { label, href, pathname, searchParams, checkActiveFn, sheet, icon, extra, items } = props;
   const isActive = checkActiveFn
-    ? checkActiveFn(pathname)
+    ? checkActiveFn(props.href, pathname, searchParams)
     : (pathname ?? '/').split('?')[0] === props.href;
 
   const itemClassName = cn(
@@ -84,6 +97,7 @@ export const SidebarMenuItem = (props: SidebarMenuItemProps) => {
       <SidebarMenu
         items={items}
         pathname={(pathname ?? '/')}
+        searchParams={searchParams ?? new ReadonlyURLSearchParams(new URLSearchParams())}
         className='pl-5 mt-1'
       />
     </AccordionContent>

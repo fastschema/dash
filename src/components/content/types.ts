@@ -17,6 +17,7 @@ export interface FieldInstance<T extends FieldValues = FieldValues> {
   render: FieldRenderer<T>,
   F(): Field,
   isSystemField(): boolean,
+  isLocked(): boolean,
   zod(): z.ZodTypeAny,
   default(): any,
   extend?(): void,

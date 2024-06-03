@@ -12,6 +12,7 @@ export const ContentEditForm = (props: Readonly<ContentEditFormProps>) => {
   const router = useRouter();
   const { schema, content } = props;
   const { form, fieldInstances } = useContentForm(schema, content);
+
   const onSubmit = async (recordData: FieldValues) => {
     try {
       const result = await saveContent(schema, recordData, content?.id);
@@ -29,7 +30,7 @@ export const ContentEditForm = (props: Readonly<ContentEditFormProps>) => {
     <form onSubmit={form.handleSubmit(onSubmit)}>
       <div className='space-y-4 py-4'>
         {fieldInstances.map(fi => {
-          if (schema.name !== 'user' && fi.isSystemField()) return null;
+          if (fi.isLocked()) return null;
           const f = fi.F();
           return <FormField
             key={f.name}
