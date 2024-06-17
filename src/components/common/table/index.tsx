@@ -19,7 +19,7 @@ import { TableToolbar } from './toolbar';
 import { TablePagination } from './pagination';
 import { TableColumn } from './column';
 import { getTableOptions, sendRequestFn, usePagination } from './utils';
-import { Pagination } from '@/lib/types';
+import { PaginationMeta } from '@/lib/types';
 import { RequestFn } from './types';
 import { Loading } from '../loading';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,7 @@ import { cn } from '@/lib/utils';
 export interface TableProps<T> {
   className?: string;
   data?: T[];
-  pagination?: Pagination;
+  pagination?: PaginationMeta;
   sort?: string | null;
   columns: TableColumn<T>[];
   filterTitle?: string;
@@ -70,7 +70,7 @@ export const Table = <T,>(props: TableProps<T>) => {
       })
   );
 
-  const [paginationData, setPaginationData] = useState<Pagination | undefined>(props.pagination);
+  const [paginationData, setPaginationData] = useState<PaginationMeta | undefined>(props.pagination);
   const { pagination, setPagination } = usePagination(props.pagination);
   const initialized = useRef(false);
   const table = useReactTable({

@@ -93,14 +93,14 @@ export type RelationContentArrayCreate = Array<{ id: number }>;
 
 export type RelationContentUpdate = RelationContentArrayUpdate | RelationContentArrayCreate | Content | null;
 
-export interface Pagination {
+export interface PaginationMeta {
   total: number;
   per_page: number;
   current_page: number;
   last_page: number;
 }
 
-export interface PaginationResponse<T> extends Pagination{
+export interface Pagination<T> extends PaginationMeta{
   items: T[];
 }
 
@@ -138,8 +138,6 @@ export const relationArrayUpdateZodObject = z.object({
 });
 
 export const relationArrayZodObject = z.union([relationArrayCreateZodObject, relationArrayUpdateZodObject]);
-
-
 
 export type RelationArrayDataType = Zod.infer<typeof relationArrayUpdateZodObject>;
 export type RelationDataType = Zod.infer<typeof relationSingleZodObject>;

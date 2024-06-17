@@ -11,7 +11,7 @@ import {
   getSortedRowModel
 } from '@tanstack/react-table';
 import { useMemo, useState } from 'react';
-import { Pagination } from '@/lib/types/content';
+import { PaginationMeta } from '@/lib/types/content';
 import { GetTableOptionsProps, SendRequestProps } from './types';
 import { notify } from '@/lib/notify';
 
@@ -139,7 +139,7 @@ export const sendRequestFn = <T,>({
   })();
 };
 
-export const usePagination = (paginationData?: Pagination) => {
+export const usePagination = (paginationData?: PaginationMeta) => {
   const [{ pageIndex, pageSize }, setPagination] = useState<PaginationState>({
     pageIndex: (paginationData?.current_page ?? 1) - 1,
     pageSize: paginationData?.per_page ?? 10,

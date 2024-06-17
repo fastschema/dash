@@ -7,7 +7,7 @@ import {
 import { ReactNode, useEffect, useState } from 'react';
 import { SearchOptions } from './search';
 import { isMultiple, searchSchemaContents } from './utils';
-import { Content, Field, PaginationResponse, Schema } from '@/lib/types';
+import { Content, Field, Pagination, Schema } from '@/lib/types';
 import { SelectPagination } from './pagination';
 import { CheckIcon } from 'lucide-react';
 import { useAppSchema } from '@/lib/context';
@@ -34,7 +34,7 @@ export const RelationContentsBrowser = (props: RelationContentsBrowserProps) => 
   } = props;
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState('');
-  const [result, setResult] = useState<PaginationResponse<Content>>();
+  const [result, setResult] = useState<Pagination<Content>>();
   const relationSchema = useAppSchema(field.relation?.schema ?? null);
   const multiple = isMultiple(field.relation);
 

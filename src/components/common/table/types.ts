@@ -1,5 +1,5 @@
 import { Dispatch, MutableRefObject, SetStateAction } from 'react';
-import { PaginationResponse, Pagination } from '@/lib/types';
+import { Pagination, PaginationMeta } from '@/lib/types';
 import { TableColumn } from './column';
 import {
   ColumnFiltersState,
@@ -17,7 +17,7 @@ export interface TableProps<T> {
   filterTitle?: string;
   enableRowSelection?: boolean;
   ssr?: boolean;
-  pagination?: Pagination;
+  pagination?: PaginationMeta;
   getRowId?: ((originalRow: T, index: number, parent?: Row<T> | undefined) => string);
   request?: RequestFn<T>;
   onRowSelectionChange?: (ids: Array<string | number>) => void;
@@ -40,7 +40,7 @@ export type RequestFn<T> = (state: {
   pagination: PaginationState;
   sorting: SortingState;
   columnFilters: ColumnFiltersState;
-}) => Promise<PaginationResponse<T> | undefined | void>;
+}) => Promise<Pagination<T> | undefined | void>;
 
 export interface SendRequestProps<T> {
   sorting: SortingState;
@@ -52,6 +52,6 @@ export interface SendRequestProps<T> {
   request?: RequestFn<T>;
   setData?: Dispatch<SetStateAction<T[]>>;
   setLoading?: Dispatch<SetStateAction<boolean>>;
-  setPaginationData: Dispatch<SetStateAction<Pagination | undefined>>;
+  setPaginationData: Dispatch<SetStateAction<PaginationMeta | undefined>>;
   setPagination: Dispatch<SetStateAction<PaginationState>>;
 }
