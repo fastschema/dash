@@ -2,9 +2,6 @@
 import '@/assets/globals.css';
 import '@/assets/style.scss';
 import '@/components/common/editor/editor.scss';
-import 'tippy.js/dist/tippy.css';
-import 'tippy.js/themes/light.css';
-import 'tippy.js/themes/light-border.css';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import NextNProgress from 'nextjs-progressbar';
 import { Toaster } from 'react-hot-toast';
@@ -26,7 +23,6 @@ import { Layout } from '@/components/layout';
 
 const bodyClassName = cn(
   'min-h-screen bg-background font-sans antialiased',
-  '[&_.slate-selected]:!bg-primary/20 [&_.slate-selection-area]:border [&_.slate-selection-area]:border-primary [&_.slate-selection-area]:bg-primary/10',
   fontSans.variable
 );
 
