@@ -44,6 +44,22 @@ export const getSchema = async (schemaName: string) => {
   return schema;
 }
 
+export const exportSchemas = async (body: {schemas : string[]}) => {
+  const schema = await Post<Response>(`/schema/export`, body);
+  return schema;
+}
+
+export const importSchemas = async (file: File[]) => {
+  const formData = new FormData();
+  file.forEach(file => formData.append('file', file));
+
+  return await Post<any>('/schema/import', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+}
+
 export const deleteSchema = (schemaName: string) => {
   return Delete(`/schema/${schemaName}`);
 }

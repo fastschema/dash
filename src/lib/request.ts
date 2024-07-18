@@ -57,7 +57,7 @@ export const createRequest = async <T>(
   url: string,
   data?: any,
   options?: RequestOptions,
-): Promise<T> => {
+): Promise<T| Response>  => {
   let response: Response | null = null;
   const requestInit: RequestInit = {
     method: method,
@@ -94,13 +94,19 @@ export const createRequest = async <T>(
       throw new Error(errorMessage);
     }
 
-    const result: Result<T> = await response.json();
+    if (response.headers.get("Content-Type")?.includes("application/json")) {
+      const result: Result<T> = await response.json();
 
-    if ((result as { error: ResponseError }).error) {
-      throw new Error(getErrorMessage((result as { error: ResponseError }).error));
+      if ((result as { error: ResponseError }).error) {
+        throw new Error(
+          getErrorMessage((result as { error: ResponseError }).error)
+        );
+      }
+
+      return (result as { data: T }).data ?? (result as T);
+    } else {
+      return response;
     }
-
-    return (result as { data: T }).data ?? (result as T);
   } catch (e: any) {
     console.error(e);
     let errorMessage = '';
