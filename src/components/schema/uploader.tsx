@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { CircleAlert, UploadCloud } from "lucide-react";
+import { useContext, useEffect } from "react";
+import { UploadCloud } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/common/button";
