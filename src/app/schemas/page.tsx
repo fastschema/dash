@@ -9,8 +9,9 @@ import { useContext, useEffect, useState } from 'react';
 import { setPageInfo } from '@/components/pageinfo';
 import { AppContext } from '@/lib/context';
 import { Schema } from '@/lib/types';
-import { deleteSchema, exportSchemas } from '@/lib/schema';
+import { exportSchemas } from '@/lib/schema';
 import { notify } from '@/lib/notify';
+import { timeStamp } from 'console';
 
 export default function SchemasList() {
   const { appConfig } = useContext(AppContext);
@@ -42,7 +43,8 @@ export default function SchemasList() {
                 const url = URL.createObjectURL(blob);
                 const link = document.createElement('a');
                 link.href = url;
-                link.download = `schemas.zip`;
+                const timeStamp = Date.now();
+                link.download = `schemas-${timeStamp}.zip`;
                 link.click();
                 URL.revokeObjectURL(url);
               });

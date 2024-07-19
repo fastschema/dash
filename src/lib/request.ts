@@ -57,7 +57,7 @@ export const createRequest = async <T>(
   url: string,
   data?: any,
   options?: RequestOptions,
-): Promise<T| Response>  => {
+): Promise<T | Response>  => {
   let response: Response | null = null;
   const requestInit: RequestInit = {
     method: method,
