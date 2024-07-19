@@ -1,17 +1,16 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { PlusCircle, DownloadCloudIcon, ImportIcon } from "lucide-react";
-import { Table } from "@/components/common/table";
-import { useSchemaTableColumns } from "@/components/schema/table";
-import { Button } from "@/components/common/button";
-import { useContext, useEffect, useState } from "react";
-import { setPageInfo } from "@/components/pageinfo";
-import { AppContext } from "@/lib/context";
-import { Schema } from "@/lib/types";
-import { deleteSchema, exportSchemas } from "@/lib/schema";
-import { notify } from "@/lib/notify";
-import { Post } from "@/lib/request";
+import Link from 'next/link';
+import { PlusCircle, DownloadCloudIcon, ImportIcon } from 'lucide-react';
+import { Table } from '@/components/common/table';
+import { useSchemaTableColumns } from '@/components/schema/table';
+import { Button } from '@/components/common/button';
+import { useContext, useEffect, useState } from 'react';
+import { setPageInfo } from '@/components/pageinfo';
+import { AppContext } from '@/lib/context';
+import { Schema } from '@/lib/types';
+import { deleteSchema, exportSchemas } from '@/lib/schema';
+import { notify } from '@/lib/notify';
 
 export default function SchemasList() {
   const { appConfig } = useContext(AppContext);
@@ -20,19 +19,19 @@ export default function SchemasList() {
   const excludeSchemas = ['user', 'role', 'permission', 'file'];
   useEffect(() => {
     setPageInfo({
-      title: "Schemas list",
-      description: "List of all schemas.",
-      breadcrumbs: [{ name: "Schema", path: "/schemas" }],
+      title: 'Schemas list',
+      description: 'List of all schemas.',
+      breadcrumbs: [{ name: 'Schema', path: '/schemas' }],
       actions: [
-        <Link key="create" href="/schemas/edit">
-          <Button size="sm" icon={<PlusCircle className="mr-2 h-4 w-4" />}>
+        <Link key='create' href='/schemas/edit'>
+          <Button size='sm' icon={<PlusCircle className='mr-2 h-4 w-4' />}>
             New Schema
           </Button>
         </Link>,
         <Button
-          key={"export"}
-          size="sm"
-          icon={<DownloadCloudIcon className="mr-2 h-4 w-4" />}
+          key={'export'}
+          size='sm'
+          icon={<DownloadCloudIcon className='mr-2 h-4 w-4' />}
           onClick={async () => {
             try {
               const response = await exportSchemas({
@@ -41,7 +40,7 @@ export default function SchemasList() {
 
               response.blob().then((blob: Blob) => {
                 const url = URL.createObjectURL(blob);
-                const link = document.createElement("a");
+                const link = document.createElement('a');
                 link.href = url;
                 link.download = `schemas.zip`;
                 link.click();
@@ -54,11 +53,11 @@ export default function SchemasList() {
         >
           Export
         </Button>,
-        <Link key="import" href="/schemas/import">
+        <Link key='import' href='/schemas/import'>
         <Button
-          key={"import"}
-          size="sm"
-          icon={<ImportIcon className="mr-2 h-4 w-4" />}
+          key={'import'}
+          size='sm'
+          icon={<ImportIcon className='mr-2 h-4 w-4' />}
         >
           Import
         </Button></Link>,
@@ -72,7 +71,7 @@ export default function SchemasList() {
       data={appConfig.schemas}
       columns={schemaTableColumns}
       getRowId={(row) => row.name}
-      filterTitle="Filter schemas"
+      filterTitle='Filter schemas'
       enableRowSelection={true}
       onRowSelectionChange={(ids) => {
         setRowSelected(ids);

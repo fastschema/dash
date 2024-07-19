@@ -94,7 +94,7 @@ export const createRequest = async <T>(
       throw new Error(errorMessage);
     }
 
-    if (response.headers.get("Content-Type")?.includes("application/json")) {
+    if (response.headers.get('Content-Type')?.includes('application/json')) {
       const result: Result<T> = await response.json();
 
       if ((result as { error: ResponseError }).error) {
