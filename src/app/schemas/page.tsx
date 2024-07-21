@@ -17,7 +17,7 @@ export default function SchemasList() {
   const { appConfig } = useContext(AppContext);
   const schemaTableColumns = useSchemaTableColumns();
   const [rowSelected, setRowSelected] = useState<Array<string | number>>([]);
-  const excludeSchemas = ['user', 'role', 'permission', 'file'];
+  const excludeSchemas = ['permission'];
   useEffect(() => {
     setPageInfo({
       title: 'Schemas list',
@@ -33,6 +33,7 @@ export default function SchemasList() {
           key={'export'}
           size='sm'
           icon={<DownloadCloudIcon className='mr-2 h-4 w-4' />}
+          disabled={rowSelected.length === 0}
           onClick={async () => {
             try {
               const response = await exportSchemas({
@@ -56,13 +57,14 @@ export default function SchemasList() {
           Export
         </Button>,
         <Link key='import' href='/schemas/import'>
-        <Button
-          key={'import'}
-          size='sm'
-          icon={<ImportIcon className='mr-2 h-4 w-4' />}
-        >
-          Import
-        </Button></Link>,
+          <Button
+            key={'import'}
+            size='sm'
+            icon={<ImportIcon className='mr-2 h-4 w-4' />}
+          >
+            Import
+          </Button>
+        </Link>,
       ],
     });
     return setPageInfo;
