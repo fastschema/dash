@@ -9,7 +9,7 @@ export type ButtonProps = BaseButtonProps & {
 };
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ loading, icon, children, ...props }, ref) => {
+  ({ loading, icon, children, disabled, ...props }, ref) => {
     const defaultProps = {
       type: 'button',
       size: 'sm',
@@ -17,14 +17,14 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     } as Omit<ButtonProps, 'children'>;
 
     if (loading) {
-      return <ButtonBase {...defaultProps} ref={ref} disabled={loading}>
+      return <ButtonBase {...defaultProps} ref={ref} disabled={disabled ||loading}>
         <Loader2 className='mr-2 h-4 w-4 animate-spin' />
         {children}
       </ButtonBase>;
     }
 
     return (
-      <ButtonBase {...defaultProps} ref={ref} disabled={loading}>
+      <ButtonBase {...defaultProps} ref={ref} disabled={disabled ||loading}>
         {icon ? (
           <div className='flex items-center gap-1'>
             {icon}
