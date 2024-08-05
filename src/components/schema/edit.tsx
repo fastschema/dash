@@ -109,14 +109,14 @@ export const EditSchemaForm = (props: Readonly<EditSchemaFormProps>) => {
       <Form {...form}>
         <form className="grid gap-8 md:grid-cols-2 lg:grid-cols-3" onSubmit={form.handleSubmit(onSubmit)}>
           <div className="relative flex-col items-start gap-8 md:flex">
-            <fieldset className="sticky top-5 w-full grid gap-5 rounded-lg border p-4">
+            <fieldset className="sticky top-5 grid w-full gap-5 rounded-lg border p-4">
               <legend className="-ml-1 px-1 text-sm font-medium">Schema</legend>
               <SchemaBasic form={form} fields={fields} editingSchema={editingSchema} />
               <Button type="submit">Save</Button>
             </fieldset>
           </div>
-          <div className="relative flex lex-col rounded-xl lg:col-span-2">
-            <fieldset className="w-full grid gap-5 rounded-lg border p-4">
+          <div className="lex-col relative flex rounded-xl lg:col-span-2">
+            <fieldset className="grid w-full gap-5 rounded-lg border p-4">
               <legend className="-ml-1 px-1 text-sm font-medium">Fields</legend>
               <SchemaFields form={form} fields={fields} setEditingField={setEditingField} removeField={removeField} />
             </fieldset>
