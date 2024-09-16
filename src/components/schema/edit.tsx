@@ -115,7 +115,7 @@ export const EditSchemaForm = (props: Readonly<EditSchemaFormProps>) => {
               <Button type="submit">Save</Button>
             </fieldset>
           </div>
-          <div className="lex-col relative flex rounded-xl lg:col-span-2">
+          <div className="flex-col relative flex rounded-xl lg:col-span-2">
             <fieldset className="grid w-full gap-5 rounded-lg border p-4">
               <legend className="-ml-1 px-1 text-sm font-medium">Fields</legend>
               <SchemaFields form={form} fields={fields} setEditingField={setEditingField} removeField={removeField} />

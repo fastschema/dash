@@ -3,7 +3,7 @@ import { Get, Post } from './request';
 import { COOKIE_NAME, LoginData, LoginResponse, SetupData, User, standaloneRoutes } from './types';
 
 export const getUserInfo = (disableErrorNotification?: boolean) => {
-  return Get<User>('/user/me', { disableErrorNotification });
+  return Get<User>('/auth/me', { disableErrorNotification });
 }
 
 export const setup = (setupData: SetupData) => {
@@ -11,7 +11,7 @@ export const setup = (setupData: SetupData) => {
 }
 
 export const login = (loginData: LoginData) => {
-  return Post<LoginResponse>('/user/login', loginData);
+  return Post<LoginResponse>('/auth/local/login', loginData);
 }
 
 

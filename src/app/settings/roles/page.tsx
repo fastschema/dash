@@ -43,7 +43,13 @@ export default function RolesList() {
   return <Table<Role>
     data={roles}
     columns={roleTableColumns}
-    getRowId={row => row.name}
+    getRowId={row => row.id.toString()}
     filterTitle='Filter roles'
+    pagination={{
+      total: roles?.length ?? 0,
+      current_page: 1,
+      per_page: 10,
+      last_page: Math.ceil((roles?.length ?? 0) / 10),
+    }}
   />;
 }
