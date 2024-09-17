@@ -16,6 +16,7 @@ import TableCell from '@tiptap/extension-table-cell';
 import TableHeader from '@tiptap/extension-table-header';
 import TableRow from '@tiptap/extension-table-row';
 import Heading from '@tiptap/extension-heading';
+import Paragraph from '@tiptap/extension-paragraph';
 import { createLowlight, common as commonGrammars } from 'lowlight';
 import { EditorProvider } from '@tiptap/react';
 import { Toolbar } from './toolbar';
@@ -32,11 +33,13 @@ export const Editor = (props: EditorProps) => {
   return <div className='rounded-lg border bg-background shadow relative'>
     <EditorProvider
       extensions={[
+        Paragraph,
         StarterKit.configure({
           codeBlock: false,
           listItem: false,
           blockquote: false,
           heading: false,
+          paragraph: false,
         }),
         TextAlign.configure({
           types: ['heading', 'paragraph'],
