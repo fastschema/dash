@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import {
   Table as TableBase,
   TableBody,
@@ -34,7 +35,11 @@ export interface TableProps<T> {
   enableRowSelection?: boolean;
   ssr?: boolean;
   hideToolbar?: boolean;
-  getRowId?: ((originalRow: T, index: number, parent?: Row<T> | undefined) => string);
+  getRowId?: (
+    originalRow: T,
+    index: number,
+    parent?: Row<T> | undefined
+  ) => string;
   request?: RequestFn<T>;
   onRowSelectionChange?: (ids: Array<string | number>) => void;
 }
@@ -58,8 +63,9 @@ export const Table = <T,>(props: TableProps<T>) => {
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [sorting, setSorting] = useState<SortingState>(
     (props.sort ?? '')
-      .split(',').filter(s => !!s.trim())
-      .map(sort => {
+      .split(',')
+      .filter((s) => !!s.trim())
+      .map((sort) => {
         let desc = false;
         if (sort.startsWith('-')) {
           desc = true;
@@ -70,7 +76,9 @@ export const Table = <T,>(props: TableProps<T>) => {
       })
   );
 
-  const [paginationData, setPaginationData] = useState<PaginationMeta | undefined>(props.pagination);
+  const [paginationData, setPaginationData] = useState<
+    PaginationMeta | undefined
+  >(props.pagination);
   const { pagination, setPagination } = usePagination(props.pagination);
   const initialized = useRef(false);
   const table = useReactTable({
@@ -103,67 +111,106 @@ export const Table = <T,>(props: TableProps<T>) => {
     setPaginationData(props.pagination);
   }, [props.pagination]);
 
-  const sendRequest = (resetPage?: boolean) => sendRequestFn({
-    sorting,
-    pagination,
-    columnFilters,
-    initialized,
-    ssr,
-    resetPage,
-    request,
-    setData,
-    setPaginationData,
-    setPagination,
-    setLoading,
-  });
+  const sendRequest = (resetPage?: boolean) =>
+    sendRequestFn({
+      sorting,
+      pagination,
+      columnFilters,
+      initialized,
+      ssr,
+      resetPage,
+      request,
+      setData,
+      setPaginationData,
+      setPagination,
+      setLoading,
+    });
 
   useEffect(sendRequest, [pagination, sorting]);
   useEffect(() => sendRequest(true), [columnFilters]);
-  useEffect(() => onRowSelectionChange?.(Object.keys(rowSelection)), [rowSelection]);
+  useEffect(
+    () => onRowSelectionChange?.(Object.keys(rowSelection)),
+    [rowSelection]
+  );
 
-  return <div className='space-y-4'>
-    {!hideToolbar && <TableToolbar table={table} columns={columns} filterTitle={filterTitle} />}
-    {loading && <Loading className='absolute' />}
-    <div className={cn('relative rounded-md border overflow-auto', className)}>
-      <TableBase className='table-fixed'>
-        <TableHeader>
-          {table.getHeaderGroups().map(headerGroup => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map(header => {
-                return <TableHead key={header.id}>
-                  {header.isPlaceholder
-                    ? null
-                    : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                </TableHead>
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map(row => {
-              return <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
-              >
-                {row.getVisibleCells().map(cell => {
-                  return <TableCell key={cell.id}>
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </TableCell>;
+  return (
+    <div className='space-y-4'>
+      {!hideToolbar && (
+        <TableToolbar
+          table={table}
+          columns={columns}
+          filterTitle={filterTitle}
+        />
+      )}
+      {loading && <Loading className='absolute' />}
+      <div
+        className={cn('relative rounded-md border overflow-auto', className)}
+      >
+        <TableBase className='table-fixed'>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  console.log(header);
+                  const className = cn(
+                    'px-3',
+                    (
+                      (header.column.columnDef?.meta ?? {}) as {
+                        className?: string;
+                      }
+                    ).className
+                  );
+                  return (
+                    <TableHead className={className} key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
                 })}
-              </TableRow>;
-            })
-          ) : <TableRow>
-            <TableCell colSpan={columns.length+1} className='h-24 text-center'>
-              No results.
-            </TableCell>
-          </TableRow>}
-        </TableBody>
-      </TableBase>
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => {
+                return (
+                  <TableRow
+                    key={row.id}
+                    data-state={row.getIsSelected() && 'selected'}
+                  >
+                    {row.getVisibleCells().map((cell) => {
+                      return (
+                        <TableCell key={cell.id} className='px-3'>
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      );
+                    })}
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length + 1}
+                  className='h-24 text-center'
+                >
+                  No results.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </TableBase>
+      </div>
+      {(props?.pagination?.last_page ?? 1) > 1 && (
+        <TablePagination table={table} />
+      )}
     </div>
-    {(props?.pagination?.last_page ?? 1) > 1 && <TablePagination table={table} />}
-  </div>;
-}
+  );
+};

@@ -16,6 +16,8 @@ export interface AuthContextType {
 // App context
 export const defaultAppState: AppContextType = {
   appConfig: {
+    version: '',
+    resources: [],
     menus: [],
     schemas: [],
   },

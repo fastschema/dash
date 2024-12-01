@@ -1,9 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
-import '@/assets/globals.css';
+import '@/assets/globals.scss';
 import '@/assets/style.scss';
 import '@/components/common/editor/editor.scss';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import NextNProgress from 'nextjs-progressbar';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from 'react-hot-toast';
 import { cn } from '@/lib/utils';
 import { SystemMessage } from '@/components/common/message';
@@ -12,13 +13,19 @@ import { getUserInfo, isStandaloneRoute } from '@/lib/user';
 import { useEffect, useMemo, useState } from 'react';
 import { Loading } from '@/components/common/loading';
 import { AppConfig, User } from '@/lib/types';
-import { AppContext, AppContextType, AuthContext, defaultAppState } from '@/lib/context';
+import {
+  AppContext,
+  AppContextType,
+  AuthContext,
+  defaultAppState,
+} from '@/lib/context';
 import { fontSans } from '@/components/font';
 import { isAuthError } from '@/lib/request';
 import { getAppConfig } from '@/lib/app';
 import { createWindowObject } from '@/components/browser';
 import { ThemeProvider } from '@/components/theme-provider';
 import { TooltipProvider } from '@/components/ui/tooltip';
+import { SidebarProvider } from '@/components/ui/sidebar';
 import { Layout } from '@/components/layout';
 
 const bodyClassName = cn(
@@ -29,15 +36,17 @@ const bodyClassName = cn(
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   const standaloneRoute = isStandaloneRoute(usePathname());
   const router = useRouter();
   const [ready, setReady] = useState(false);
   const [error, setError] = useState<string>();
   const [user, setUser] = useState<User>();
-  const [appConfig, setAppConfig] = useState<AppConfig>(defaultAppState.appConfig);
   const queryClient = new QueryClient();
+  const [appConfig, setAppConfig] = useState<AppConfig>(
+    defaultAppState.appConfig
+  );
 
   useEffect(() => {
     createWindowObject();
@@ -51,8 +60,10 @@ export default function RootLayout({
 
     (async () => {
       try {
-        const userInfo = await getUserInfo();
-        const appConfigData = await getAppConfig();
+        const [userInfo, appConfigData] = await Promise.all([
+          getUserInfo(),
+          getAppConfig(),
+        ]);
         setAppConfig(appConfigData);
         setUser(userInfo);
         setReady(true);
@@ -62,45 +73,52 @@ export default function RootLayout({
     })();
   }, [standaloneRoute]);
 
-  const authContextValue = useMemo(() => ({ ...AuthContext, user, setUser }), [user]);
-  const appContextValue = useMemo<AppContextType>(() => ({
-    ...AppContext,
-    appConfig,
-    setAppConfig,
-    reloadAppConfig: async () => {
-      try {
-        const appConfigData = await getAppConfig();
-        setAppConfig(appConfigData);
-      } catch (e: any) {
-        setError(e.message);
-      }
-    },
-  }), [appConfig]);
+  const authContextValue = useMemo(
+    () => ({ ...AuthContext, user, setUser }),
+    [user]
+  );
+  const appContextValue = useMemo<AppContextType>(
+    () => ({
+      ...AppContext,
+      appConfig,
+      setAppConfig,
+      reloadAppConfig: async () => {
+        try {
+          const appConfigData = await getAppConfig();
+          setAppConfig(appConfigData);
+        } catch (e: any) {
+          setError(e.message);
+        }
+      },
+    }),
+    [appConfig]
+  );
 
   if (!ready && !error) {
-    return <html lang='en'>
-      <body>
-        <div className={bodyClassName}><Loading full /></div>
-      </body>
-    </html>
+    return (
+      <html lang='en'>
+        <body>
+          <div className={bodyClassName}>
+            <Loading full />
+          </div>
+        </body>
+      </html>
+    );
   }
 
   return (
     <html lang='en'>
-      <body
-        className={bodyClassName}
-        suppressHydrationWarning
-      >
+      <body className={bodyClassName} suppressHydrationWarning>
         <ThemeProvider attribute='class' defaultTheme='light'>
           <AuthContext.Provider value={authContextValue}>
             <AppContext.Provider value={appContextValue}>
               <QueryClientProvider client={queryClient}>
                 <TooltipProvider delayDuration={50}>
-                  <SystemMessage />
-                  {standaloneRoute
-                    ? children
-                    : <Layout>{children}</Layout>}
-                  <Toaster />
+                  <SidebarProvider>
+                    <SystemMessage />
+                    {standaloneRoute ? children : <Layout>{children}</Layout>}
+                    <Toaster />
+                  </SidebarProvider>
                 </TooltipProvider>
               </QueryClientProvider>
             </AppContext.Provider>
@@ -109,5 +127,5 @@ export default function RootLayout({
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

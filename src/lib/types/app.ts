@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import { Schema } from './schema';
+import { Resource } from './content';
 
 export interface SidebarMenuItem {
   name: string;
@@ -13,6 +14,8 @@ export interface BreadcrumbItem {
 }
 
 export interface AppConfig {
+  version: string;
+  resources: Resource[];
   menus: SidebarMenuItem[];
   schemas: Schema[];
 }

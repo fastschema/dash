@@ -1,13 +1,12 @@
-import { listSchemas } from './schema';
+import { Get } from './request';
 import { AppConfig, SidebarMenuItem } from './types';
 
 export const getAppConfig = async (): Promise<AppConfig> => {
-  const schemas = await listSchemas();
+  const config = await Get<AppConfig>('/config');
   const menus: SidebarMenuItem[] = [];
-  const appConfig: AppConfig = {
-    menus,
-    schemas,
-  };
 
-  return appConfig;
-}
+  return {
+    ...config,
+    menus,
+  };
+};

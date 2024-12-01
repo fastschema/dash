@@ -1,10 +1,10 @@
 import { RoleFormValues } from '@/components/role/data';
 import { Delete, Get, Post, Put } from './request';
-import { Permission, Resource, Role } from './types';
+import { Resource, Role } from './types';
 
 export const listRoles = async () => {
   return Get<Role[]>('/role');
-}
+};
 
 export const getRole = async (id: string | null) => {
   if (!id) {
@@ -13,12 +13,10 @@ export const getRole = async (id: string | null) => {
 
   const role = await Get<Role>(`/role/${id}`);
 
-  role.permissions = ((role.permissions ?? []) as unknown as Permission[]).map((permission: Permission) => {
-    return permission.resource;
-  });
+  role.permissions = role.permissions ?? [];
 
   return role;
-}
+};
 
 export const saveRole = async (role: RoleFormValues, id?: number) => {
   if (!id) {
@@ -34,19 +32,14 @@ export const saveRole = async (role: RoleFormValues, id?: number) => {
   }
 
   return savedRole;
-}
+};
 
 export const deleteRole = (id: number) => {
   return Delete(`/role/${id}`);
-}
-
-export const getResources = async () => {
-  const resources = await Get<Resource[]>(`/role/resources`);
-  return filterOutEmptyResourceGroups(filterOutWhitelistResources(resources));
-}
+};
 
 export const filterOutWhitelistResources = (resources: Resource[]) => {
-  return resources.filter(resource => {
+  return resources.filter((resource) => {
     if (resource.whitelist) {
       return false;
     }
@@ -57,10 +50,10 @@ export const filterOutWhitelistResources = (resources: Resource[]) => {
 
     return true;
   });
-}
+};
 
 export const filterOutEmptyResourceGroups = (resources: Resource[]) => {
-  return resources.filter(resource => {
+  return resources.filter((resource) => {
     if (resource.group && !resource?.resources?.length) {
       return false;
     }
@@ -71,4 +64,4 @@ export const filterOutEmptyResourceGroups = (resources: Resource[]) => {
 
     return true;
   });
-}
+};
