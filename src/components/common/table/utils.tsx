@@ -18,6 +18,9 @@ import { notify } from '@/lib/notify';
 export const getColumns = <T,>(columns: TableColumn<T>[], enableRowSelection?: boolean): TableColumn<T>[] => {
   const checkColumns: TableColumn<T>[] = (enableRowSelection ? [{
     id: 'select',
+    meta: {
+      className: 'w-8',
+    },
     header: ({ table }) => (
       <Checkbox
         checked={

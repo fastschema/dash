@@ -8,8 +8,8 @@ export interface Permission {
   created_at: string;
   updated_at: string;
   deleted_at: string;
-
 }
+
 export interface Role extends Content {
   id: number;
   created_at: string;
@@ -17,8 +17,14 @@ export interface Role extends Content {
   deleted_at: string;
   name: string;
   root: boolean;
-  permissions?: string[];
+  rule?: string;
+  permissions?: Permission[];
   users?: User[] | RelationContentUpdate;
+}
+
+export interface RolePermissionSetting {
+  resource: string;
+  rule?: string;
 }
 
 export interface Resource {
@@ -27,6 +33,7 @@ export interface Resource {
   name: string;
   whitelist?: boolean;
   resources?: Resource[];
+  meta?: {};
 }
 
 export interface User extends Content {
@@ -87,11 +94,15 @@ export interface Content {
 export type RelationContentArrayUpdate = {
   $add?: Array<{ id: number }>;
   $clear?: Array<{ id: number }>;
-}
+};
 
 export type RelationContentArrayCreate = Array<{ id: number }>;
 
-export type RelationContentUpdate = RelationContentArrayUpdate | RelationContentArrayCreate | Content | null;
+export type RelationContentUpdate =
+  | RelationContentArrayUpdate
+  | RelationContentArrayCreate
+  | Content
+  | null;
 
 export interface PaginationMeta {
   total: number;
@@ -100,21 +111,39 @@ export interface PaginationMeta {
   last_page: number;
 }
 
-export interface Pagination<T> extends PaginationMeta{
+export interface Pagination<T> extends PaginationMeta {
   items: T[];
 }
 
-export type FilterOperator = '$eq' | '$neq' | '$gt' | '$gte' | '$lt' | '$lte' | '$like' | '$in' | '$nin' | '$null';
-export type FilterValue = string | number | boolean | null | string[] | number[] | boolean[] | null[];
+export type FilterOperator =
+  | '$eq'
+  | '$neq'
+  | '$gt'
+  | '$gte'
+  | '$lt'
+  | '$lte'
+  | '$like'
+  | '$in'
+  | '$nin'
+  | '$null';
+export type FilterValue =
+  | string
+  | number
+  | boolean
+  | null
+  | string[]
+  | number[]
+  | boolean[]
+  | null[];
 
 export type FilterObject = {
   [k in FilterOperator]: FilterValue;
-}
+};
 
 export interface Filter {
   [key: string]: FilterObject | FilterValue | Filter[] | undefined;
-  '$or'?: Filter[];
-  '$and'?: Filter[];
+  $or?: Filter[];
+  $and?: Filter[];
 }
 
 export interface FilterParams {
@@ -132,12 +161,17 @@ export const relationSingleZodObject = z.object({
 export const relationArrayCreateZodObject = z.array(relationSingleZodObject);
 
 export const relationArrayUpdateZodObject = z.object({
-  '$nochange': z.boolean().optional(),
-  '$add': z.array(relationSingleZodObject).optional(),
-  '$clear': z.array(relationSingleZodObject).optional(),
+  $nochange: z.boolean().optional(),
+  $add: z.array(relationSingleZodObject).optional(),
+  $clear: z.array(relationSingleZodObject).optional(),
 });
 
-export const relationArrayZodObject = z.union([relationArrayCreateZodObject, relationArrayUpdateZodObject]);
+export const relationArrayZodObject = z.union([
+  relationArrayCreateZodObject,
+  relationArrayUpdateZodObject,
+]);
 
-export type RelationArrayDataType = Zod.infer<typeof relationArrayUpdateZodObject>;
+export type RelationArrayDataType = Zod.infer<
+  typeof relationArrayUpdateZodObject
+>;
 export type RelationDataType = Zod.infer<typeof relationSingleZodObject>;

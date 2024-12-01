@@ -1,3 +1,4 @@
+import { get } from 'http';
 import * as z from 'zod';
 
 export const fieldSchema = z
@@ -35,6 +36,8 @@ export const fieldSchema = z
     unique: z.boolean().optional(),
     optional: z.boolean().optional(),
     default: z.any().nullable(),
+    setter: z.string().optional(),
+    getter: z.string().optional(),
     sortable: z.boolean().optional(),
     filterable: z.boolean().optional(),
     renderer: z
@@ -156,6 +159,8 @@ export const defaultFieldValues: SchemaFormValues['fields'][0] = {
   type: 'string',
   enums: [],
   default: '',
+  setter: '',
+  getter: '',
   size: 0,
   multiple: false,
   db: {
