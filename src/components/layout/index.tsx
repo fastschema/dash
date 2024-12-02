@@ -48,11 +48,10 @@ const excludeSchemasFromMenu = ['user', 'role', 'permission', 'file'];
 
 export function Layout(props: SidebarProps) {
   const { appConfig } = useContext(AppContext);
-  const { logo, sheet } = props;
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const schemas = appConfig.schemas.filter(
-    (schema) => !excludeSchemasFromMenu.includes(schema.name)
+    (schema) => !excludeSchemasFromMenu.includes(schema.name) && !schema.is_junction_schema
   );
 
   const sidebarMenusItems = createSidebarMenuItems({

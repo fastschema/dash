@@ -3,7 +3,6 @@ import { Schema } from '@/lib/types';
 import {
   Home,
   Library,
-  Badge,
   LibraryBig,
   Package,
   Plus,
