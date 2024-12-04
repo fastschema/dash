@@ -11,13 +11,12 @@ import { AppContext } from '@/lib/context';
 import { Schema } from '@/lib/types';
 import { exportSchemas } from '@/lib/schema';
 import { notify } from '@/lib/notify';
-import { timeStamp } from 'console';
 
+const excludeSchemas = ['permission', 'role'];
 export default function SchemasList() {
   const { appConfig } = useContext(AppContext);
   const schemaTableColumns = useSchemaTableColumns();
   const [rowSelected, setRowSelected] = useState<Array<string | number>>([]);
-  const excludeSchemas = ['permission'];
   useEffect(() => {
     setPageInfo({
       title: 'Schemas list',
@@ -37,7 +36,9 @@ export default function SchemasList() {
           onClick={async () => {
             try {
               const response = await exportSchemas({
-                schemas: rowSelected.filter((item) => !excludeSchemas.includes(item as string)) as string[],
+                schemas: rowSelected.filter(
+                  (item) => !excludeSchemas.includes(item as string)
+                ) as string[],
               });
 
               response.blob().then((blob: Blob) => {
@@ -72,11 +73,19 @@ export default function SchemasList() {
 
   return (
     <Table<Schema>
-      data={appConfig.schemas}
+      data={appConfig.schemas.filter((s) => {
+        return !excludeSchemas.includes(s.name) && !s.is_junction_schema;
+      })}
       columns={schemaTableColumns}
       getRowId={(row) => row.name}
       filterTitle='Filter schemas'
       enableRowSelection={true}
+      pagination={{
+        per_page: 1000,
+        total: appConfig.schemas.length,
+        current_page: 1,
+        last_page: 1,
+      }}
       onRowSelectionChange={(ids) => {
         setRowSelected(ids);
       }}

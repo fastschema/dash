@@ -151,7 +151,6 @@ export const Table = <T,>(props: TableProps<T>) => {
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
-                  console.log(header);
                   const className = cn(
                     'px-3',
                     (
